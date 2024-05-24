@@ -6,11 +6,13 @@ import FirstStepForm from './components/FirstStepForm'
 import SecondStepForm from './components/SecondStepForm'
 import LastStepForm from './components/LastStepForm'
 import { useForm } from './hooks/useForm'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { getAddressFromZipCode } from './api/api'
 import ProgressForm from './components/Progress'
 import Logo from './assets/SFRC-Logo.svg'
 import { message, notification } from 'antd'
+import { debounce } from 'lodash'
+import axios from 'axios'
 
 
 const formTemplate = {
@@ -108,8 +110,7 @@ function App() {
      
       <form onSubmit={(e) => {
           e.preventDefault();
-
-         if(currentStep == 0 && data.zipCode == '123') {
+         if(currentStep == 0) {
           changeStep(currentStep + 1, e)
          }
 

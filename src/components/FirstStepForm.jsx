@@ -1,8 +1,72 @@
+/* eslint-disable no-undef */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import { Button, Checkbox, Form, Input } from 'antd';
+import { AutoComplete, Button, Checkbox, Form, Input } from 'antd';
+import axios from 'axios';
+import { debounce } from 'lodash';
+import { useCallback, useState } from 'react';
+import { REACT_APP_BING_MAPS_API_KEY } from '../config';
 
 const FirstStepForm = ({data,updateFieldHandler}) => {
+    const [options, setOptions] = useState([]);
+    const [valueSelected, setValueSelected] = useState([]);
+
+    const fetchZipAndAddress = async (query) => {  
+        const apiKey = REACT_APP_BING_MAPS_API_KEY;
+        const url = `http://dev.virtualearth.net/REST/v1/Autosuggest?query=${query}&userLocation=36.7783,-119.4179&includeEntityTypes=Address&countryFilter=US&key=${apiKey}`;
+    
+        try {
+          const response = await axios.get(url);
+          if (response.data.resourceSets.length > 0) {
+
+            if(response.data.resourceSets[0].resources[0].value){
+                let valuesMapped = response.data.resourceSets[0].resources[0].value[0];
+
+                updateFieldHandler('zipCode', valuesMapped.address.postalCode)
+                updateFieldHandler('city', valuesMapped.address.locality)
+            }
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      };
+
+    const fetchSuggestions = async (query) => {
+        const apiKey = REACT_APP_BING_MAPS_API_KEY;
+        const url = `http://dev.virtualearth.net/REST/v1/Autosuggest?query=${query}&userLocation=36.7783,-119.4179&includeEntityTypes=Address&countryFilter=US&key=${apiKey}`;
+       
+    
+        try {
+          const response = await axios.get(url);
+          if (response.data.resourceSets.length > 0) {
+           
+
+            if(response.data.resourceSets[0].resources[0].value){
+                        
+                let valuesMapped = response.data.resourceSets[0].resources[0].value.map((option) => {
+                    let teste = option.address
+                    return teste;
+                })
+
+                setOptions(valuesMapped.map((value) => {
+                    return { value: value.formattedAddress,
+                           zip: value.postalCode
+                     } 
+                }));
+            }
+           
+          }
+        } catch (error) {
+          console.error('Error :', error);
+        }
+      };
+
+      const onSelected = (e) => {
+        fetchZipAndAddress(e)
+      }
+
+      const debouncedFetchSuggestions = useCallback(debounce((query) => fetchSuggestions(query), 300), []);
+
     return (
         <div> 
             <div className="form-control">
@@ -35,17 +99,25 @@ const FirstStepForm = ({data,updateFieldHandler}) => {
 
             <div className="form-control">
                 <label htmlFor="name">Street Adress:</label>
-                <Input 
-                type="string"
-                name="streetAdress"
-                id="streetAdress"
-                placeholder="Enter your Street Address"
-                required
-                value={data.streetAdress || ""}
-                onChange={(e) => updateFieldHandler("streetAdress", e.target.value)}
-                
-                /> 
+                 <AutoComplete
+                    onSelect={(e) =>{
+                        onSelected(e)
+
+                    }}
+                    value={data.streetAdress || ""}
+                    onSearch={(e) => debouncedFetchSuggestions(e)}
+                    onChange={(e)=> {
+                        // debouncedFetchSuggestions(e);
+                        updateFieldHandler("streetAdress", e)
+                    }}
+                    options={options}
+                >
+             <Input  value={data.streetAdress || ""} size="large" placeholder="Enter your Street Address" />
+
+                </AutoComplete>
+                             
             </div>
+           
 
             <div className="form-control">
                 <label htmlFor="name">City</label>
@@ -53,11 +125,11 @@ const FirstStepForm = ({data,updateFieldHandler}) => {
                 type="string"
                 name="city"
                 id="city"
-                placeholder="Enter your City"
+                placeholder="Enter your Street Address first!"
                 required
                 value={data.city || ""}
                 onChange={(e) => updateFieldHandler("city", e.target.value)}
-                
+                disabled={true}
                 /> 
             </div>
 
@@ -67,11 +139,11 @@ const FirstStepForm = ({data,updateFieldHandler}) => {
                 type="string"
                 name="zipCode"
                 id="zipCode"
-                placeholder="Enter your Zip Code"
+                placeholder="Enter your Street Address first!"
                 required
                 value={data.zipCode || ""}
-                onChange={(e) => updateFieldHandler("zipCode", e.target.value)}
-                
+                onChange={(e) => updateFieldHandler("zipCode", e)}
+                disabled={true}
                 /> 
             </div>
         </div>

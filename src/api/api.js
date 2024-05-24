@@ -11,3 +11,18 @@ export const getAddressFromZipCode = async (zipCode) => {
   }
 };
 
+export const fetchSuggestions = async (query) => {
+  const apiKey = '';
+  const url = `http://dev.virtualearth.net/REST/v1/Autosuggest?query=${query}&key=${apiKey}`;
+
+  try {
+    const response = await axios.get(url);
+    const res = response.data.resourceSets[0].resources
+    if (response.data.resourceSets.length > 0) {
+      console.log();
+    }
+  } catch (error) {
+    console.error('Erro ao buscar sugestões:', error);
+  }
+};
+
