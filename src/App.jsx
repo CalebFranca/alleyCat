@@ -10,36 +10,41 @@ import { useCallback, useState } from 'react'
 import { getAddressFromZipCode } from './api/api'
 import ProgressForm from './components/Progress'
 import Logo from './assets/SFRC-Logo.svg'
-import { message, notification } from 'antd'
+import { Spin, message, notification } from 'antd'
 import { debounce } from 'lodash'
 import axios from 'axios'
 
 
+
 const formTemplate = {
   firstName: "",
-  email: "",
+  lastName: "",
   streetAdress: "",
   city: "",
   zipCode: "",
-  lastName: "",
-  problemOccurring: "",
+
+  email: "",
   phoneNumber: "",
-  businees: "Select an Option",
+  residenceOrBusiness: "",
   propertyHouse: "",
   landordName: "",
   landordNumber: "",
   notify_landlord: "",
-  aboutUs: "",
-  otherAbout: "",
+  request_concerning: "",
+  problemOccurring: "",
   onlyServiceIndoor: "",
-  daySelected: "",
-  hourSelected: ""
+  aboutUs: "",
+  otherAboutUs: "",
+
+  daySchedule: "",
+  hourSchedule: ""
 }
 
 
 function App() {
     const [data, setData] = useState(formTemplate);
-    const [disabled, setDisabled] = useState(false);
+    const [disabled, setDisabled] = useState(true);
+    const [loading, setLoading] = useState(false)
 
     // updates the global value of the form for the last step
     const updateFieldHandler = (key, value) => {
@@ -48,11 +53,26 @@ function App() {
       })
     }
 
+    const handleSubmit = async (e) => {
+      setLoading(true)
+      try {
+          const response = await axios.post('http://localhost:5000/api/teste', e);
+          message.success('FinishSchedule');
+          changeStep(0)
+          setData(formTemplate)
+      } catch (error) {
+          message.error('There was an error saving the form data!',4);
+      }
+      setLoading(false)
+  };
+
 
   const  FinsishForm = () => {
     console.log('its working', data)
-    if(data.hourSelected && data.daySelected != "") {
-      message.success(`Thanks, ${data.firstName} ${data.lastName}, Scheduled for the ${data.daySelected} at ${data.hourSelected}.`)
+    if(data.daySchedule && data.hourSchedule != "") {
+        handleSubmit(data)
+    }else{
+      message.error('Fill in all the fields!');
     }
    
   }
@@ -111,16 +131,39 @@ function App() {
       <form onSubmit={(e) => {
           e.preventDefault();
          if(currentStep == 0) {
-          changeStep(currentStep + 1, e)
+          if(data.firstName == "" || data.lastName == "" ||  data.streetAdress == "" || data.city == ""){
+            message.error('Fill in all the fields!')
+          }else {
+              setDisabled(false)
+              changeStep(currentStep + 1, e)
+          }     
          }
 
-         if(currentStep == 1 || currentStep == 2) {
-          e.preventDefault();
-         
-           changeStep(currentStep + 1, e)
-         }
-         
-          }}>
+         if(currentStep ==  1) {
+           e.preventDefault();
+           if (
+            data.residenceOrBusiness === "" ||
+            data.propertyHouse === "" ||
+            data.request_concerning === "" ||
+            data.problemOccurring === "" ||
+            data.onlyServiceIndoor === "" ||
+            data.aboutUs === ""
+        ) {
+            message.error('Fill in all the fields!');
+        } else if (
+            data.residenceOrBusiness === 'business' ||
+            data.problemOccurring === 'outdoors' ||
+            data.onlyServiceIndoor === 'no'
+        ) {
+            message.error('Sorry, please review your details to proceed.', 4);
+        } else{
+          changeStep(currentStep + 1, e)
+        }}
+        
+
+        
+        
+        }}>
         <div className="inputs-container">
              {currentComponent}
         </div>
@@ -135,10 +178,11 @@ function App() {
              {
               !isLastStep ? (
                 <div className='control-buttons'>
-                   <button className='ant-btn'  type='submit'>Next</button>
+                   <button  className='ant-btn'  type='submit'>Next</button>
                 </div>
               ) : (
                 <div className='control-buttons'>
+                  <Spin spinning={loading}/>
                   <button type='button' className='ant-btn' onClick={FinsishForm}>Schedule Appointment</button>
                 </div>
               )

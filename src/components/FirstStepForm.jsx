@@ -7,6 +7,7 @@ import { debounce } from 'lodash';
 import { useCallback, useState } from 'react';
 import { REACT_APP_BING_MAPS_API_KEY } from '../config';
 
+
 const FirstStepForm = ({data,updateFieldHandler}) => {
     const [options, setOptions] = useState([]);
     const [valueSelected, setValueSelected] = useState([]);
@@ -33,7 +34,7 @@ const FirstStepForm = ({data,updateFieldHandler}) => {
 
     const fetchSuggestions = async (query) => {
         const apiKey = REACT_APP_BING_MAPS_API_KEY;
-        const url = `http://dev.virtualearth.net/REST/v1/Autosuggest?query=${query}&userLocation=36.7783,-119.4179&includeEntityTypes=Address&countryFilter=US&key=${apiKey}`;
+        const url = `http://dev.virtualearth.net/REST/v1/Autosuggest?query=${query}, California&includeEntityTypes=Address&userRegion=US&countryFilter=US&key=${apiKey}`;
        
     
         try {
@@ -46,6 +47,7 @@ const FirstStepForm = ({data,updateFieldHandler}) => {
                 let valuesMapped = response.data.resourceSets[0].resources[0].value.map((option) => {
                     let teste = option.address
                     return teste;
+
                 })
 
                 setOptions(valuesMapped.map((value) => {
@@ -98,7 +100,7 @@ const FirstStepForm = ({data,updateFieldHandler}) => {
             </div>
 
             <div className="form-control">
-                <label htmlFor="name">Street Adress:</label>
+                <label htmlFor="streetAdress">Street Adress:</label>
                  <AutoComplete
                     onSelect={(e) =>{
                         onSelected(e)

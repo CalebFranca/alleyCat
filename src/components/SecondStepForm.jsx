@@ -40,12 +40,12 @@ const SecondStepForm = ({data, updateFieldHandler}) => {
                 /> 
             </div>
             <div className="form-control">
-                <label htmlFor="business_residennce">Is this for a business or residence?</label>
+                <label htmlFor="residenceOrBusiness">Is this for a business or residence?</label>
                         <Select
                       
-                        value={data.businees || ""}
+                        value={data.residenceOrBusiness || ""}
                         onChange={(value) => {
-                        updateFieldHandler("businees", value);
+                        updateFieldHandler("residenceOrBusiness", value);
                         setBusinees(value);
                     }}
                 >
@@ -109,8 +109,8 @@ const SecondStepForm = ({data, updateFieldHandler}) => {
                            updateFieldHandler("notify_landlord", e)
                            }}
                      >
-                            <Option value="yes">Yes- My Landlord has aggreed to this free estimate </Option>
-                            <Option value="no">No - </Option>
+                            <Option value="yes">Yes - My Landlord has aggreed to this free estimate </Option>
+                            <Option value="no">No - I haven't notified my landlord.</Option>
                         </Select>
                     </div>
                </>
@@ -164,8 +164,8 @@ const SecondStepForm = ({data, updateFieldHandler}) => {
                         updateFieldHandler("onlyServiceIndoor", e)
                         }}
                  >
-                    <Option value="yes">No, I don't understand</Option>
-                    <Option value="no">Yes, I understand</Option>
+                    <Option value="no">No, I don't understand</Option>
+                    <Option value="yes">Yes, I understand</Option>
                  </Select>
             </div>
 
@@ -195,16 +195,16 @@ const SecondStepForm = ({data, updateFieldHandler}) => {
           { 
              valueAboutUs == 'other' ? (
                 <div className="form-control">
-                <label htmlFor="landordNumber">Please specify (Name of Referrer)</label>
+                <label htmlFor="otherAboutUs">Please specify (Name of Referrer)</label>
                 <TextArea
                 maxLength={100} 
-                type="otherAbout"
-                name="otherAbout"
-                id="otherAbout"
+                type="otherAboutUs"
+                name="otherAboutUs"
+                id="otherAboutUs"
                 placeholder="Digite o seu otherAbout"
                 required
-                value={data.otherAbout || ""}
-                onChange={(e) => updateFieldHandler("otherAbout", e.target.value)} 
+                value={data.otherAboutUs || ""}
+                onChange={(e) => updateFieldHandler("otherAboutUs", e.target.value)} 
                 /> 
             </div>
              ) : ''
