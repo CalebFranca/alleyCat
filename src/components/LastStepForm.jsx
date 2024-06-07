@@ -20,9 +20,8 @@ const LastStepForm = ({data, updateFieldHandler}) => {
         setSchedules(prev => ({...prev, res}))
       }
         setSchedules(res)
-        console.log('data antes', res)
-        console.log('data aqui', schedules)
-      
+
+        console.log(schedules)
     }
 
    useEffect(()=>{

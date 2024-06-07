@@ -31,7 +31,7 @@ const FirstStepForm = ({data,updateFieldHandler}) => {
     const fetchZipAndAddress = async (query) => {  
         const apiKey = REACT_APP_BING_MAPS_API_KEY;
         const url = `http://dev.virtualearth.net/REST/v1/Autosuggest?query=${query}&userLocation=36.7783,-119.4179&includeEntityTypes=Address&countryFilter=US&key=${apiKey}`;
-        console.log("teste", apiKey)
+       
         try {
           const response = await axios.get(url);
           if (response.data.resourceSets.length > 0) {
@@ -46,20 +46,15 @@ const FirstStepForm = ({data,updateFieldHandler}) => {
                 zips.map((zip)=> {
                
                   if(zip == valuesMapped.address.postalCode){
-                   console.log('trueeeeeeeeee')
+                  
                    boolZip = true 
-                    
+                 
                   }
-
                   return boolZip
-
                 })
 
 
-                console.log('trueeeeeeeeee', boolZip)
-
                 if(boolZip == true) {
-                  console.log('veradedede')
                   updateFieldHandler('zipCode', valuesMapped.address.postalCode)
                 }else{
                   message.error("Sorry, we do not serve this region.", 5)
@@ -167,7 +162,7 @@ const FirstStepForm = ({data,updateFieldHandler}) => {
                 type="string"
                 name="city"
                 id="city"
-                placeholder="Enter your Street Address first!"
+                placeholder="Select your Street Address first!"
                 required
                 value={data.city || ""}
                 onChange={(e) => updateFieldHandler("city", e.target.value)}
@@ -181,7 +176,7 @@ const FirstStepForm = ({data,updateFieldHandler}) => {
                 type="string"
                 name="zipCode"
                 id="zipCode"
-                placeholder="Enter your Street Address first!"
+                placeholder="Select a compatible address!"
                 required
                 value={data.zipCode || ""}
                 onChange={(e) => updateFieldHandler("zipCode", e)}

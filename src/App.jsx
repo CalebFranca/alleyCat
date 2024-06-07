@@ -7,12 +7,9 @@ import SecondStepForm from './components/SecondStepForm'
 import LastStepForm from './components/LastStepForm'
 import { useForm } from './hooks/useForm'
 import { useCallback, useState } from 'react'
-import {  sendData } from './api/api'
 import ProgressForm from './components/Progress'
 import Logo from './assets/SFRC-Logo.svg'
 import { Spin, message, notification } from 'antd'
-import { debounce } from 'lodash'
-import axios from 'axios'
 
 
 
@@ -53,35 +50,26 @@ function App() {
       })
     }
 
-    const handleSubmit = async (e) => {
-      setLoading(true)
-      try {
-          const response = await axios.post('http://localhost:5000/api/teste', e);
-          message.success('FinishSchedule');
-          changeStep(0)
-          setData(formTemplate)
-      } catch (error) {
-          message.error('There was an error saving the form data!',4);
-      }
-      setLoading(false)
-  };
 
   const saveForm = async (data) => {
-      let res = await sendData(data).then((res)=> {
-        console.log('response', res)
-      })
+        setLoading(true)
+     
+        message.success('FinishSchedule');
+        changeStep(0)
+        setData(formTemplate)
+        console.log('json for send:',data)
+
+       setLoading(false)
   }
 
 
   const  FinsishForm = () => {
    
     if(data.daySchedule && data.hourSchedule != "") {
-        handleSubmit(data)
+      saveForm(data);
     }else{
       message.error('Fill in all the fields!');
     }
-
-    saveForm(data);
 
    
   }
@@ -142,7 +130,7 @@ function App() {
       <form onSubmit={(e) => {
           e.preventDefault();
          if(currentStep == 0) {
-          if(data.firstName == "" || data.lastName == "" ||  data.streetAdress == "" || data.city == ""){
+          if(data.firstName == "" || data.lastName == "" ||  data.streetAdress == "" || data.city == "" || data.zipCode == ""){
             message.error('Fill in all the fields!')
           }else {
               setDisabled(false)
