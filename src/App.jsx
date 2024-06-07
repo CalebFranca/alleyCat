@@ -74,12 +74,12 @@ function App() {
 
 
   const  FinsishForm = () => {
-    console.log('its working', data)
-    // if(data.daySchedule && data.hourSchedule != "") {
-    //     handleSubmit(data)
-    // }else{
-    //   message.error('Fill in all the fields!');
-    // }
+   
+    if(data.daySchedule && data.hourSchedule != "") {
+        handleSubmit(data)
+    }else{
+      message.error('Fill in all the fields!');
+    }
 
     saveForm(data);
 
@@ -110,28 +110,30 @@ function App() {
   return (
     <div className='box-geral'>
       <div  className='logo-container'>
-          <header >
-             <img  src={Logo} height={50}/>
-          </header>
+             <img  src={Logo} height={84} width={352.52}/>
       </div>
           {/* <hr/> */}
     <div className='form-container'>
-      <h3>Form for free inspection</h3>
+      <div className='padding--48'>
+      <span className='padding-bottom--15'>Form for free inspection</span>
       
       {
         currentStep == 0 ? (
           <>
-          <p>Step 1 - Find Service Area</p>
+          <span className='font-bold'>Step 1: Find Service Area</span>
+          <p className='progress'>1 of 3</p>
           <ProgressForm progreesValue={33}/>
           </>
         ) : currentStep == 1 ? (
           <>
-          <p>Step 2</p>
+          <p className='font-bold'>Step 2</p>
+          <p className='progress'>2 of 3</p>
           <ProgressForm progreesValue={66}/>
           </>
         ) : currentStep == 2 ? (
           <>
-          <p>Step 3 - Schedule Free Inspection</p>
+          <p className='font-bold'>Step 3 - Schedule Free Inspection</p>
+          <p className='progress'>3 of 3</p>
           <ProgressForm progreesValue={100}/>
           </>
         ) : ''
@@ -192,12 +194,13 @@ function App() {
               ) : (
                 <div className='control-buttons'>
                   <Spin spinning={loading}/>
-                  <button type='button' className='ant-btn' onClick={FinsishForm}>Schedule Appointment</button>
+                  <button type='button' className='ant-btn orange' onClick={FinsishForm}>Schedule Appointment</button>
                 </div>
               )
              }
         </div>
       </form>
+    </div>
     </div>
     </div>
   )

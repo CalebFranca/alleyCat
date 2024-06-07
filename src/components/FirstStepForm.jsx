@@ -28,11 +28,10 @@ const FirstStepForm = ({data,updateFieldHandler}) => {
     useState(()=>{
        getValidzips()
     },[])
-
     const fetchZipAndAddress = async (query) => {  
         const apiKey = REACT_APP_BING_MAPS_API_KEY;
         const url = `http://dev.virtualearth.net/REST/v1/Autosuggest?query=${query}&userLocation=36.7783,-119.4179&includeEntityTypes=Address&countryFilter=US&key=${apiKey}`;
-    
+        console.log("teste", apiKey)
         try {
           const response = await axios.get(url);
           if (response.data.resourceSets.length > 0) {
@@ -116,7 +115,6 @@ const FirstStepForm = ({data,updateFieldHandler}) => {
                 <label className='label-name' htmlFor="firstName">First Name</label>
                 <Input 
                 type="text"
-               
                 name="firstName"
                 id="firstName"
                 placeholder="Enter your First Name"
@@ -127,7 +125,7 @@ const FirstStepForm = ({data,updateFieldHandler}) => {
             </div>
 
             <div className="form-control">
-                <label htmlFor="lastName">Last Name:</label>
+                <label htmlFor="lastName">Last Name</label>
                 <Input 
                 type="text"
                 name="lastName"
@@ -141,7 +139,7 @@ const FirstStepForm = ({data,updateFieldHandler}) => {
             </div>
 
             <div className="form-control">
-                <label htmlFor="streetAdress">Street Adress:</label>
+                <label htmlFor="streetAdress">Street Adress</label>
                  <AutoComplete
                     onSelect={(e) =>{
                         onSelected(e)
@@ -165,6 +163,7 @@ const FirstStepForm = ({data,updateFieldHandler}) => {
             <div className="form-control">
                 <label htmlFor="name">City</label>
                 <Input 
+                 disabled={true}
                 type="string"
                 name="city"
                 id="city"
@@ -172,13 +171,13 @@ const FirstStepForm = ({data,updateFieldHandler}) => {
                 required
                 value={data.city || ""}
                 onChange={(e) => updateFieldHandler("city", e.target.value)}
-                disabled={true}
                 /> 
             </div>
 
             <div className="form-control">
                 <label htmlFor="name">Zip Code</label>
                 <Input 
+                disabled={true}
                 type="string"
                 name="zipCode"
                 id="zipCode"
@@ -186,7 +185,6 @@ const FirstStepForm = ({data,updateFieldHandler}) => {
                 required
                 value={data.zipCode || ""}
                 onChange={(e) => updateFieldHandler("zipCode", e)}
-                disabled={true}
                 /> 
             </div>
         </div>

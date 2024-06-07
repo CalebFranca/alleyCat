@@ -1,8 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Flex, Progress } from 'antd';
 const ProgressForm = ({progreesValue}) => (
-  <Flex gap="small" vertical>
-    <Progress showInfo={false} percent={progreesValue} />
-  </Flex>
+    <Progress strokeColor="rgb(34 197 94)" trailColor='rgb(209 213 219)' showInfo={false} percent={progreesValue}  />
 );
 export default ProgressForm;

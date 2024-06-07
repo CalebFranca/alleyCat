@@ -42,7 +42,7 @@ const SecondStepForm = ({data, updateFieldHandler}) => {
             <div className="form-control">
                 <label htmlFor="residenceOrBusiness">Is this for a business or residence?</label>
                         <Select
-                      
+                        className="ant-select"
                         value={data.residenceOrBusiness || ""}
                         onChange={(value) => {
                         updateFieldHandler("residenceOrBusiness", value);

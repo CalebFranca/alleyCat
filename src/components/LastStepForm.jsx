@@ -102,7 +102,7 @@ const LastStepForm = ({data, updateFieldHandler}) => {
     
         <div className='form-control'> 
           <h4>Please select a date below and time to schedule your free inspection</h4>
-          <p>*If you do not see a specific time slot that you want, that means that it is not available</p>
+          <p style={{color: "#1a1f36"}}>*If you do not see a specific time slot that you want, that means that it is not available</p>
           {schedules.length > 0 &&  <DatePicker
             // value={data.daySchedule || ""}
              onChange={(value, valueYear)=>{  
