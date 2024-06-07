@@ -1,10 +1,22 @@
 /* eslint-disable no-unused-vars */
 import axios from 'axios';
 
-export const getAddressFromZipCode = async (zipCode) => {
+export const getDatas = async () => {
   try {
-    const response = await axios.get(`http://api.zippopotam.us/us/${zipCode}`);
-    return response.data;
+    const response = await axios.post("https://func-dataanalytics.azurewebsites.net/api/getDates?code=ESmMSeuygB4_WNJqG9v4qAwx6fc8PrnzC3OetU9Zn18HAzFubaRW9Q%3D%3D");
+    // console.log('datas indisponíveis aqui',response.data.data )
+    return response.data.data;
+  } catch (error) {
+    console.error("Invalid data or API error:", error);
+    return null;
+  }
+};
+
+export const getZipValids = async () => {
+  try {
+    const response = await axios.get("https://func-dataanalytics.azurewebsites.net/api/getZips?code=ESmMSeuygB4_WNJqG9v4qAwx6fc8PrnzC3OetU9Zn18HAzFubaRW9Q%3D%3D");
+    console.log('zips válidos aqui',response.data.data )
+    return response.data.data;
   } catch (error) {
     console.error("Invalid ZIP Code or API error:", error);
     return null;
@@ -23,6 +35,21 @@ export const fetchSuggestions = async (query) => {
     }
   } catch (error) {
     console.error('Erro ao buscar sugestões:', error);
+  }
+};
+
+export const sendData = async ({data}) => {
+  try {
+    const response = await axios.post('https://func-dataanalytics.azurewebsites.net/api/sendSchedule?code=aL1FpokwHjQAjMkQQ0csrbCseyJp9Pw7U8tDTpodjNNzAzFu3se3Ag%3D%3D', data, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    console.log('Success:', response.data);
+    return response;
+  } catch (error) {
+    console.error('Error:', error);
   }
 };
 

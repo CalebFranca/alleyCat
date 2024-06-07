@@ -7,7 +7,7 @@ import SecondStepForm from './components/SecondStepForm'
 import LastStepForm from './components/LastStepForm'
 import { useForm } from './hooks/useForm'
 import { useCallback, useState } from 'react'
-import { getAddressFromZipCode } from './api/api'
+import {  sendData } from './api/api'
 import ProgressForm from './components/Progress'
 import Logo from './assets/SFRC-Logo.svg'
 import { Spin, message, notification } from 'antd'
@@ -66,14 +66,23 @@ function App() {
       setLoading(false)
   };
 
+  const saveForm = async (data) => {
+      let res = await sendData(data).then((res)=> {
+        console.log('response', res)
+      })
+  }
+
 
   const  FinsishForm = () => {
     console.log('its working', data)
-    if(data.daySchedule && data.hourSchedule != "") {
-        handleSubmit(data)
-    }else{
-      message.error('Fill in all the fields!');
-    }
+    // if(data.daySchedule && data.hourSchedule != "") {
+    //     handleSubmit(data)
+    // }else{
+    //   message.error('Fill in all the fields!');
+    // }
+
+    saveForm(data);
+
    
   }
 

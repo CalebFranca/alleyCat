@@ -1,16 +1,33 @@
 /* eslint-disable no-undef */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import { AutoComplete, Button, Checkbox, Form, Input } from 'antd';
+import { AutoComplete, Button, Checkbox, Form, Input, message } from 'antd';
 import axios from 'axios';
 import { debounce } from 'lodash';
 import { useCallback, useState } from 'react';
 import { REACT_APP_BING_MAPS_API_KEY } from '../config';
+import { getZipValids } from '../api/api';
 
 
 const FirstStepForm = ({data,updateFieldHandler}) => {
     const [options, setOptions] = useState([]);
     const [valueSelected, setValueSelected] = useState([]);
+    const[zips, setZips] = useState([]);
+
+    const getValidzips = async () => {
+      const res = await getZipValids()
+    
+
+
+      if(res){
+        setZips(res)
+      }
+
+    }
+
+    useState(()=>{
+       getValidzips()
+    },[])
 
     const fetchZipAndAddress = async (query) => {  
         const apiKey = REACT_APP_BING_MAPS_API_KEY;
@@ -23,8 +40,32 @@ const FirstStepForm = ({data,updateFieldHandler}) => {
             if(response.data.resourceSets[0].resources[0].value){
                 let valuesMapped = response.data.resourceSets[0].resources[0].value[0];
 
-                updateFieldHandler('zipCode', valuesMapped.address.postalCode)
                 updateFieldHandler('city', valuesMapped.address.locality)
+                let boolZip = false;
+
+
+                zips.map((zip)=> {
+               
+                  if(zip == valuesMapped.address.postalCode){
+                   console.log('trueeeeeeeeee')
+                   boolZip = true 
+                    
+                  }
+
+                  return boolZip
+
+                })
+
+
+                console.log('trueeeeeeeeee', boolZip)
+
+                if(boolZip == true) {
+                  console.log('veradedede')
+                  updateFieldHandler('zipCode', valuesMapped.address.postalCode)
+                }else{
+                  message.error("Sorry, we do not serve this region.", 5)
+                }
+                
             }
           }
         } catch (error) {

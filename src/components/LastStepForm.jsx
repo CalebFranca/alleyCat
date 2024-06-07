@@ -3,37 +3,55 @@
 import moment from 'moment';
 
 import { DatePicker, Select } from "antd";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Option } from 'antd/es/mentions';
 import { indisponibleDates } from '../utils/indisponibleDates';
+import { getDatas } from '../api/api';
 
 const LastStepForm = ({data, updateFieldHandler}) => {
     const [selectedDate, setSelectedDate] = useState('');
     const fixedHours = ['07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '01:00', '02:00', '03:00', '04:00', '05:00']
     const [disponibleHours, setDisponibleHours] = useState(fixedHours);
+    const [schedules, setSchedules] = useState([]);
+
+    const getIndisponibleDates = async () => {
+      const res = await getDatas();
+      if(res){
+        setSchedules(prev => ({...prev, res}))
+      }
+        setSchedules(res)
+        console.log('data antes', res)
+        console.log('data aqui', schedules)
+      
+    }
+
+   useEffect(()=>{
+    getIndisponibleDates()
+
+   },[])
 
      // when we will call to api and get values but api isnt working yet
-    const schedules = [
-      {
-        "company": "C1",
-        "schedule": {
-          "2024-05-28": ["05:00", "07:00", "03:00"],
-          "2024-05-27": ["03:00", "05:00", "07:00"],
-          "2024-05-31": ["05:00"],
-          "2024-05-30": ["03:00"],
-          "2024-06-03": ["05:00"]
-        }
-      },
-      {
-        "company": "C2",
-        "schedule": {
-          "2024-05-27": ["08:00", "06:00", "04:00"],
-          "2024-05-28": ["04:00", "06:00", "10:00"],
-          "2024-05-29": ["10:00", "04:00"],
-          "2024-07-10": ["01:00"]
-        }
-      }
-      ]
+    // const schedules = [
+    //   {
+    //     "company": "C1",
+    //     "schedule": {
+    //       "2024-05-28": ["05:00", "07:00", "03:00"],
+    //       "2024-05-27": ["03:00", "05:00", "07:00"],
+    //       "2024-05-31": ["05:00"],
+    //       "2024-05-30": ["03:00"],
+    //       "2024-06-03": ["05:00"]
+    //     }
+    //   },
+    //   {
+    //     "company": "C2",
+    //     "schedule": {
+    //       "2024-05-27": ["08:00", "06:00", "04:00"],
+    //       "2024-05-28": ["04:00", "06:00", "10:00"],
+    //       "2024-05-29": ["10:00", "04:00"],
+    //       "2024-07-10": ["01:00"]
+    //     }
+    //   }
+    //   ]
 
       function filtroDia(dia, agenda){
         const horasPorDia = {};
@@ -85,7 +103,7 @@ const LastStepForm = ({data, updateFieldHandler}) => {
         <div className='form-control'> 
           <h4>Please select a date below and time to schedule your free inspection</h4>
           <p>*If you do not see a specific time slot that you want, that means that it is not available</p>
-            <DatePicker
+          {schedules.length > 0 &&  <DatePicker
             // value={data.daySchedule || ""}
              onChange={(value, valueYear)=>{  
                 setDisponibleHours(fixedHours)
@@ -93,7 +111,8 @@ const LastStepForm = ({data, updateFieldHandler}) => {
                 setSelectedDate(valueYear)
                 const diasFiltrados = filtroDia(valueYear, schedules)
                 setDisponibleHours(diasFiltrados)
-            }} disabledDate={isDateDisabled} />
+            }} disabledDate={isDateDisabled} /> }
+           
        
         <label htmlFor="problemOccurring">Please select an available timeslot</label>
         <Select  value={data.hourSchedule || ""}
