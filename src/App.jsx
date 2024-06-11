@@ -9,7 +9,7 @@ import { useForm } from './hooks/useForm'
 import { useCallback, useState } from 'react'
 import ProgressForm from './components/Progress'
 import { Spin, message, notification } from 'antd'
-
+import Logo from './assets/SFRC-Logo.svg'
 
 
 const formTemplate = {
