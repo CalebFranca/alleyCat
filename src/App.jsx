@@ -8,7 +8,6 @@ import LastStepForm from './components/LastStepForm'
 import { useForm } from './hooks/useForm'
 import { useCallback, useState } from 'react'
 import ProgressForm from './components/Progress'
-import Logo from './assets/SFRC-Logo.svg'
 import { Spin, message, notification } from 'antd'
 
 
