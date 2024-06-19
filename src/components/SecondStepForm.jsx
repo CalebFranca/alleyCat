@@ -13,6 +13,27 @@ const SecondStepForm = ({data, updateFieldHandler}) => {
     const [businees, setBusinees] = useState('');
     const [propertyHouse, setPropertyHouse] = useState('');
 
+    const handleTel = (event) => {
+        let input = event.target.value;
+        input = input.replace(/\D/g, ''); 
+        input = input.substring(0, 10); 
+    
+        const areaCode = input.substring(0, 3);
+        const centralOfficeCode = input.substring(3, 6);
+        const lineNumber = input.substring(6, 10);
+    
+        if (input.length > 6) {
+          input = `(${areaCode}) ${centralOfficeCode}-${lineNumber}`;
+        } else if (input.length > 3) {
+          input = `(${areaCode}) ${centralOfficeCode}`;
+        } else if (input.length > 0) {
+          input = `(${areaCode}`;
+        }
+    
+        updateFieldHandler("phoneNumber",input);
+      };
+    
+
     return (
         <div> 
              <div className="form-control">
@@ -36,7 +57,7 @@ const SecondStepForm = ({data, updateFieldHandler}) => {
                 placeholder="Digite o seu phoneNumber"
                 required
                 value={data.phoneNumber || ""}
-                onChange={(e) => updateFieldHandler("phoneNumber", e.target.value)} 
+                onChange={handleTel} 
                 /> 
             </div>
             <div className="form-control">
@@ -128,9 +149,16 @@ const SecondStepForm = ({data, updateFieldHandler}) => {
                       updateFieldHandler("request_concerning", e)      
                       }}
                  >
-                    <Option value="yes">No - I have problems with others animals</Option>
-                    <Option value="no">Yes (I think) - I have problems with rats and mice adn would like to exterminate them.</Option>
+                    <Option value="no">No - I have problems with others animals</Option>
+                    <Option value="yes">Yes (I think) - I have problems with rats and mice adn would like to exterminate them.</Option>
                  </Select>
+                 {
+                    data.request_concerning == 'no'  ? (
+                        <p>
+                        *Note: We do not service other animals at the time, including but not limited to racoons, bed bugs, etc
+                        </p>
+                    ) : ''
+                 }
             </div>
 
             <div className="form-control">
@@ -145,7 +173,7 @@ const SecondStepForm = ({data, updateFieldHandler}) => {
                     <Option value="indoors">Indoors and Outdoors</Option>
                  </Select>
                  {
-                    problemOcurring =='outdoors'  ? (
+                    problemOcurring =='outdoors' || problemOcurring == 'indoors'  ? (
                         <p>
                         *Note: We do not service outdoor areas such as yards, bushes and trees because that is considered within the natural habitat of
                          the animals and it would be illegal for us to service. We only service the indoor area of the service address requested 
@@ -155,19 +183,23 @@ const SecondStepForm = ({data, updateFieldHandler}) => {
                  }
                 
             </div>
-
-            <div className="form-control">
-                <label htmlFor="onlyServiceIndoor">Do you understand that we only service indoor areas?</label>
-                 <Select 
-                   value={data.onlyServiceIndoor || ""}
-                   onChange={(e) =>{
-                        updateFieldHandler("onlyServiceIndoor", e)
-                        }}
-                 >
-                    <Option value="no">No, I don't understand</Option>
-                    <Option value="yes">Yes, I understand</Option>
-                 </Select>
-            </div>
+{
+    data.problemOccurring == 'outdoors' ||  data.problemOccurring == 'indoors' ? (
+        <div className="form-control">
+        <label htmlFor="onlyServiceIndoor">Do you understand that we only service indoor areas?</label>
+         <Select 
+           value={data.onlyServiceIndoor || ""}
+           onChange={(e) =>{
+                updateFieldHandler("onlyServiceIndoor", e)
+                }}
+         >
+            <Option value="no">No, I don't understand</Option>
+            <Option value="yes">Yes, I understand</Option>
+         </Select>
+    </div>
+    ) : ''
+}
+          
 
             <div className="form-control">
                 <label htmlFor="aboutUs">How did you hear about us?</label>
