@@ -1,10 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/prop-types */
 
 import { Input, Select } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { Option } from "antd/es/mentions";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 /* eslint-disable no-unused-vars */
 const SecondStepForm = ({data, updateFieldHandler}) => {
@@ -12,6 +13,17 @@ const SecondStepForm = ({data, updateFieldHandler}) => {
     const [problemOcurring, setProblemOcurring] = useState('');
     const [businees, setBusinees] = useState('');
     const [propertyHouse, setPropertyHouse] = useState('');
+
+
+    useEffect(() => {
+        // Verifique o valor de propertyHouse ao entrar na tela
+        if (data.propertyHouse == 'renter') {
+            setPropertyHouse('renter')
+        } 
+        if(data.residenceOrBusiness == 'business'){
+            setBusinees('business')
+        }
+    }, [propertyHouse, businees]);
 
     const handleTel = (event) => {
         let input = event.target.value;
@@ -74,7 +86,7 @@ const SecondStepForm = ({data, updateFieldHandler}) => {
                     <Option value="residence">Residence</Option>
                 </Select>
                  {
-                    businees =='business'  ? (
+                    businees == 'business'  ? (
                         <p>
                         *Note: Sorry, we do not service commercial properties at this time
                         </p>
