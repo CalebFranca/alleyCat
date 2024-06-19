@@ -144,7 +144,7 @@ function App() {
             data.propertyHouse === "" ||
             data.request_concerning === "" ||
             data.problemOccurring === "" ||
-            data.onlyServiceIndoor === "" ||
+            // data.onlyServiceIndoor === "" ||
             data.aboutUs === ""
         ) {
             message.error('Fill in all the fields!');
