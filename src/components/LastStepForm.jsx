@@ -21,7 +21,6 @@ const LastStepForm = ({data, updateFieldHandler}) => {
       }
         setSchedules(res)
 
-        console.log(schedules)
     }
 
    useEffect(()=>{

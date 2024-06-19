@@ -82,7 +82,7 @@ const FirstStepForm = ({data,updateFieldHandler}) => {
           const response = await axios.get(url);
           if (response.data.resourceSets.length > 0) {
             
-            console.log('response aqui', response.data.resourceSets[0].resources[0].value)
+            // console.log('response aqui', response.data.resourceSets[0].resources[0].value)
 
             if(response.data.resourceSets[0].resources[0].value){
                         
@@ -96,7 +96,7 @@ const FirstStepForm = ({data,updateFieldHandler}) => {
                     if(value.postalCode != ""){
                       disponibleZips.map((zipValid)=> {
                         if(value.postalCode == zipValid) {
-                          console.log('verdade', zipValid, value.postalCode)
+                         
 
                           updateFieldHandler('zipCode', value.postalCode)
                           updateFieldHandler('city', value.city)
