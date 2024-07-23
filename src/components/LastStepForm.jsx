@@ -10,20 +10,6 @@ import { getDatas } from "../api/api";
 
 const LastStepForm = ({ data, updateFieldHandler }) => {
   const [selectedDate, setSelectedDate] = useState("");
-  const fixedHours = [
-    "07:00",
-    "08:00",
-    "09:00",
-    "10:00",
-    "11:00",
-    "12:00",
-    "01:00",
-    "02:00",
-    "03:00",
-    "04:00",
-    "05:00",
-  ];
-
   const fixedHour = [
     {
       name: "07:00 - AM",
@@ -72,6 +58,7 @@ const LastStepForm = ({ data, updateFieldHandler }) => {
 
   ]
   const [disponibleHours, setDisponibleHours] = useState(fixedHour);
+
   // const [schedules, setSchedules] = useState([]);
 
   // const getIndisponibleDates = async () => {
@@ -186,7 +173,7 @@ const LastStepForm = ({ data, updateFieldHandler }) => {
         <DatePicker
           // value={data.daySchedule || ""}
           onChange={(value, valueYear) => {     
-            setDisponibleHours(fixedHours);
+            setDisponibleHours(fixedHour);
             updateFieldHandler("daySchedule", valueYear);
             setSelectedDate(valueYear);
             const diasFiltrados = filtroDia(valueYear, schedules);
