@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useState } from "react";
 export function useForm(steps) {
-    const [currentStep,setCurrentStep] = useState(2)
+    const [currentStep,setCurrentStep] = useState(0)
 
    function changeStep(i,evt) {
    console.log('numero de etapas', steps.length)

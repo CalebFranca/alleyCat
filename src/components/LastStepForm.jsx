@@ -23,43 +23,91 @@ const LastStepForm = ({ data, updateFieldHandler }) => {
     "04:00",
     "05:00",
   ];
-  const [disponibleHours, setDisponibleHours] = useState(fixedHours);
-  const [schedules, setSchedules] = useState([]);
 
-  const getIndisponibleDates = async () => {
-    const res = await getDatas();
-    if (res) {
-      setSchedules((prev) => ({ ...prev, res }));
-    }
-    setSchedules(res);
-  };
+  const fixedHour = [
+    {
+      name: "07:00 - AM",
+      value: "07:00"
+    },
+    {
+      name: "08:00 - AM",
+      value: "08:00"
+    },
+    {
+      name: "09:00 - AM",
+      value: "09:00"
+    },
+    {
+      name: "10:00 - AM",
+      value: "10:00"
+    },
+    {
+      name: "11:00 - AM",
+      value: "11:00"
+    },
+    {
+      name: "12:00 - PM",
+      value: "12:00"
+    },
+    {
+      name: "01:00 - PM",
+      value: "01:00"
+    },
+    {
+      name: "02:00 - PM",
+      value: "02:00"
+    },
+    {
+      name: "03:00 - PM",
+      value: "03:00"
+    },
+    {
+      name: "04:00 - PM",
+      value: "04:00"
+    },
+    {
+      name: "05:00 - PM",
+      value: "05:00"
+    },
 
-  useEffect(() => {
-    getIndisponibleDates();
-  }, []);
+  ]
+  const [disponibleHours, setDisponibleHours] = useState(fixedHour);
+  // const [schedules, setSchedules] = useState([]);
+
+  // const getIndisponibleDates = async () => {
+  //   const res = await getDatas();
+  //   if (res) {
+  //     setSchedules((prev) => ({ ...prev, res }));
+  //   }
+  //   setSchedules(res);
+  // };
+
+  // useEffect(() => {
+  //   getIndisponibleDates();
+  // }, []);
 
   // when we will call to api and get values but api isnt working yet
-  // const schedules = [
-  //   {
-  //     "company": "C1",
-  //     "schedule": {
-  //       "2024-07-23": ["05:00", "07:00", "03:00"],
-  //       "2024-07-24": ["03:00", "05:00", "07:00"],
-  //       "2024-07-25": ["05:00"],
-  //       "2024-05-30": ["03:00"],
-  //       "2024-06-03": ["05:00"]
-  //     }
-  //   },
-  //   {
-  //     "company": "C2",
-  //     "schedule": {
-  //       "2024-05-27": ["08:00", "06:00", "04:00"],
-  //       "2024-05-28": ["04:00", "06:00", "10:00"],
-  //       "2024-05-29": ["10:00", "04:00"],
-  //       "2024-07-10": ["01:00"]
-  //     }
-  //   }
-  //   ]
+  const schedules = [
+    {
+      "company": "C1",
+      "schedule": {
+        "2024-07-23": ["09:00", "07:00", "03:00"],
+        "2024-07-24": ["03:00", "05:00", "07:00"],
+        "2024-07-25": ["05:00"],
+        "2024-05-30": ["03:00"],
+        "2024-06-03": ["05:00"]
+      }
+    },
+    {
+      "company": "C2",
+      "schedule": {
+        "2024-07-23": ["09:00", "06:00", "04:00"],
+        "2024-05-28": ["04:00", "06:00", "10:00"],
+        "2024-05-29": ["10:00", "04:00"],
+        "2024-07-10": ["01:00"]
+      }
+    }
+    ]
 
   function filtroDia(dia, agenda) {
     const horasPorDia = {};
@@ -81,11 +129,11 @@ const LastStepForm = ({ data, updateFieldHandler }) => {
 
     const horasCertas = {};
 
-    let result = fixedHours;
+    let result = fixedHour;
 
     if (horasPorDia[dia]) {
-      result = fixedHours.filter(
-        (hour) => horasPorDia[dia][hour] != agenda.length
+      result = fixedHour.filter(
+        (hour) => horasPorDia[dia][hour.value] != agenda.length
       );
     }
 
@@ -117,18 +165,20 @@ const LastStepForm = ({ data, updateFieldHandler }) => {
   
   const isDateDisabled = (current) => {
     let disponibleDates = extractDates(schedules)
-    console.log(disponibleDates)
+    console.log(disponibleDates) 
     
     const formattedCurrent = current && current.toISOString().slice(0, 10);
      return !disponibleDates.includes(formattedCurrent);
   };
+
+
 
   return (
     <div className="form-control">
       <h4>
         Please select a date below and time to schedule your free inspection
       </h4>
-      <p style={{ color: "#1a1f36" }}>
+      <p style={{ color: "#1a1f36", paddingBottom: "10px"}}>
         *If you do not see a specific time slot that you want, that means that
         it is not available
       </p>
@@ -161,8 +211,8 @@ const LastStepForm = ({ data, updateFieldHandler }) => {
       >
         {disponibleHours.map((e) => {
           return (
-            <Select.Option key={e} value={e}>
-              {e}
+            <Select.Option key={e.value} value={e.value}>
+              {e.name}
             </Select.Option>
           );
         })}
