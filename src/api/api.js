@@ -24,7 +24,7 @@ export const getZipValids = async () => {
 
 export const fetchSuggestions = async (query) => {
   const apiKey = '';
-  const url = `http://dev.virtualearth.net/REST/v1/Autosuggest?query=${query}&key=${apiKey}`;
+  const url = `https://dev.virtualearth.net/REST/v1/Autosuggest?query=${query}&key=${apiKey}`;
 
   try {
     const response = await axios.get(url);
@@ -37,7 +37,7 @@ export const fetchSuggestions = async (query) => {
   }
 };
 
-export const sendData = async ({data}) => {
+export const sendData = async ({ data }) => {
   try {
     const response = await axios.post('https://func-dataanalytics.azurewebsites.net/api/sendSchedule?code=aL1FpokwHjQAjMkQQ0csrbCseyJp9Pw7U8tDTpodjNNzAzFu3se3Ag%3D%3D');
 

@@ -21,7 +21,7 @@ const FirstStepForm = ({data,updateFieldHandler}) => {
 
     const fetchZipAndAddress = async (query) => {  
         const apiKey = REACT_APP_BING_MAPS_API_KEY;
-        const url = `http://dev.virtualearth.net/REST/v1/Autosuggest?query=${query}&userLocation=36.7783,-119.4179&includeEntityTypes=Address&countryFilter=US&key=${apiKey}`;
+        const url = `https://dev.virtualearth.net/REST/v1/Autosuggest?query=${query}&userLocation=36.7783,-119.4179&includeEntityTypes=Address&countryFilter=US&key=${apiKey}`;
        
         try {
           const response = await axios.get(url);
@@ -75,7 +75,7 @@ const FirstStepForm = ({data,updateFieldHandler}) => {
 
     const fetchSuggestions = async (query) => {
         const apiKey = REACT_APP_BING_MAPS_API_KEY;
-        const url = `http://dev.virtualearth.net/REST/v1/Autosuggest?query=${query}, California&includeEntityTypes=Address&userRegion=US&countryFilter=US&key=${apiKey}`;
+        const url = `https://dev.virtualearth.net/REST/v1/Autosuggest?query=${query}, California&includeEntityTypes=Address&userRegion=US&countryFilter=US&key=${apiKey}`;
        
     
         try {
